@@ -10,6 +10,9 @@ function Data() {
 
     let value = [];
     let valueDate = [];
+    let zd = [];
+    let dj = [];
+
 
     const [data, setData] = useState([]);
 
@@ -28,6 +31,8 @@ function Data() {
         for (const dataObj of data) {
             value.push(parseInt(dataObj.zl));
             valueDate.push(dataObj.created_at);
+            zd.push(parseInt(dataObj.zd));
+            dj.push(parseInt(dataObj.dj));
         }
     }
     console.log("Data pushés :", value, data)
@@ -51,6 +56,7 @@ function Data() {
             },
         ],
     };
+
     const options = {
         scales: {
             y: {

@@ -89,7 +89,8 @@ function Accueil() {
                                                     <td>{Number(val.dj).toFixed(5)}</td>
                                                     <td>{val.created_at}</td>
                                                     <td>
-                                                        <button type="button" className="btn btn-danger"
+                                                        <button type="button" className="btn btn"
+                                                            style={{border:"2px solid silver"}}
                                                             onClick={(e) => deleteData(e, val.id)}>  Supprimer
                                                         </button>
                                                     </td>
