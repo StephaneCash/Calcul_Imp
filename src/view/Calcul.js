@@ -15,9 +15,10 @@ function Calcul() {
     const [ud, setUd] = useState('');
     const [zd, setZd] = useState('');
     const [dj, setDj] = useState('');
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(true);
     const [r, setR] = useState('');
     const [x, setX] = useState('');
+    const [ms, setMs] = useState('');
 
     let tab = {};
 
@@ -32,10 +33,12 @@ function Calcul() {
             let alertD = document.querySelector('.alertDefaut');
             alertD.innerHTML = "Valeur acceptée";
             verifD = true;
+            setData(true)
             return false;
         } else {
             verifD = false;
-            alert('Valeur différente de 3.6 km')
+            setMs("Valeur différente de 3.6 km")
+            setData(false)
         }
     }
 
@@ -184,6 +187,10 @@ function Calcul() {
                                             onChange={(e) => setD(e.target.value)} value={d}
                                             placeholder="Entrer la distance" />
                                         <p style={{ color: 'green' }} className='alertDefaut'></p>
+                                        <p style={{ color:"red"}}>{ms !== '' ? (<>
+                                            {
+                                                data == true  ? (<></>) : (<>{ms}</>)
+                                            }</>) : (<></>)}</p>
                                     </div>
                                 </>) : (<></>)
                             }
