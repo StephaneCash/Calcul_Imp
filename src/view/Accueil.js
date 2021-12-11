@@ -61,10 +61,10 @@ function Accueil() {
                 <div className="col-md-2">
                     <MenuLeft />
                 </div>
-                <div className="col-md-10 menu" style={{ marginTop: '50px' }}>
-                    <p>
+                <div className="col-md-10 menu" style={{ marginTop: '70px' }}>
+                    <h4>
                         Données stoquées
-                    </p>
+                    </h4>
                     <table className="table table-borderless table-striped table-bordered">
                         <thead>
                             <tr>

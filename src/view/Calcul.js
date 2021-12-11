@@ -16,16 +16,33 @@ function Calcul() {
     const [zd, setZd] = useState('');
     const [dj, setDj] = useState('');
     const [data, setData] = useState([]);
+    const [r, setR] = useState('');
+    const [x, setX] = useState('');
 
     let tab = {};
 
+    let distance = 3.6;
+
     let navigate = useNavigate();
 
+    let verifD = false;
+
     function verif() {
-        if (d === '0') {
-            alert('La distance ne peut être nulle')
+        if (d == distance) {
+            let alertD = document.querySelector('.alertDefaut');
+            alertD.innerHTML = "Valeur acceptée";
+            verifD = true;
             return false;
+        } else {
+            verifD = false;
+            alert('Valeur différente de 3.6 km')
         }
+    }
+
+    const ImpedanceCa = () => {
+        let zca = Math.sqrt((r * r) + x * x);
+        console.log("Data zla : ", zca);
+        setZlca(zca)
     }
 
     if (zl > 0 && zl < 166.808) {
@@ -37,7 +54,7 @@ function Calcul() {
         }).catch(rej => {
             console.log(rej)
         })
-    } else if (zl > 166.808) {
+    } else if (zl !== 420.50984170818174) {
         tab.zl = zl;
         if (zd > 0) {
             tab.zd = zd;
@@ -59,7 +76,7 @@ function Calcul() {
                                 swal("Vos données ont été sauvegardées", {
                                     icon: "success",
                                 });
-                            }).catch(rej=>{
+                            }).catch(rej => {
                                 console.log(rej)
                             })
                         } else {
@@ -75,28 +92,33 @@ function Calcul() {
 
     const Calcul = () => {
         verif();
-        let zlf = d * zlca;
-        setZl(zlf);
+
+        if (verifD === true) {
+            let zlf = d * zlca;
+            setZl(zlf);
+        }
     }
 
     const resetTout = () => {
         setZl('');
-        setZd('')
-        setDj('')
-        setId('')
-        setUd('')
-        setD("")
-        setZlca("")
+        setZd('');
+        setDj('');
+        setId('');
+        setUd('');
+        setD("");
+        setZlca("");
+        setX('')
+        setR('')
     }
 
-    let zdk = 166.808;
+    let zdk = 420.50984170818174;
 
     function zlSup() {
-        if (zl > zdk) {
+        if (zl !== zdk && zl > 0) {
             return (<p className='alert alert-danger'>
-                Attention ! Fonctionnement anormal car {zl} est supérieur à {zdk}
+                Attention ! Fonctionnement anormal car {zl} est différente à {zdk}
             </p>)
-        } else if (zl > 0 && zl < zdk) {
+        } else if (zl == zdk) {
             return (<p className="alert alert-success">
                 Fonctionnement normal
             </p>)
@@ -109,8 +131,12 @@ function Calcul() {
     }
 
     const calculZd = () => {
-        let zdf = ud / id;
-        setZd(zdf);
+
+        if (id == 260 && ud == 30000) {
+        } else {
+            let zdf = ud / id;
+            setZd(zdf);
+        }
     }
 
     useEffect(() => {
@@ -128,31 +154,43 @@ function Calcul() {
                 <div className="col-md-2">
                     <MenuLeft />
                 </div>
-                <div className="col-md-10" style={{ marginTop: '50px', width: '82.5%' }}>
+                <div className="col-md-10" style={{ marginTop: '70px', width: '82.5%' }}>
                     <div className="card">
                         <div className="card-header">
                             <h5>Calcul de l'impédance de Ligne</h5>
                         </div>
                         <div className="card-body">
                             {
-                                zd > 0 ? (<>
-
-                                </>) : (<>
+                                zl > 0 ? (<></>) : (<>
                                     <div className="form-group">
-                                        <label>Veuillez entrer la valeur de l'impédance caractéristique en Ohms (ZLca) </label>
-                                        <input type="number" className="form-control mt-1" onChange={(e) => setZlca(e.target.value)}
-                                            value={zlca} placeholder="Impédance caractéristique" />
+                                        <label>Veuillez entrer la valeur de la résistance en Ohms </label>
+                                        <input type="number" className="form-control mt-1" onChange={(e) => setR(e.target.value)}
+                                            value={r} placeholder="La valeur de la résistance " />
                                     </div>
                                     <div className="form-grou mt-3">
-                                        <label>Veuillez entrer la valeur de la distance   (d) </label>
-                                        <input type="number" className="form-control mt-1" onChange={(e) => setD(e.target.value)} value={d} placeholder="Impédance caractéristique" />
+                                        <label>Veuillez entrer la valeur de la réactance en Ohms </label>
+                                        <input type="number" className="form-control mt-1"
+                                            onChange={(e) => setX(e.target.value)} value={x} placeholder="La valeur de la réactance " />
                                     </div>
                                 </>)
                             }
 
+                            {
+                                zlca > 0 ? (<>
+                                    <p className='mt-3'> La valeur de l'impédance caractéristique vaut : <strong> {zlca} Ohms</strong></p>
+                                    <div className="form-grou mt-3">
+                                        <label>Veuillez entrer la valeur de la distance   (d) </label>
+                                        <input type="number" className="form-control mt-1"
+                                            onChange={(e) => setD(e.target.value)} value={d}
+                                            placeholder="Entrer la distance" />
+                                        <p style={{ color: 'green' }} className='alertDefaut'></p>
+                                    </div>
+                                </>) : (<></>)
+                            }
+
                             <p className="mt-3">
                                 {
-                                    zl > 166.808 ? (<p>
+                                    zl > 0 ? (<p>
                                         La valeur de l'impédance de Ligne (ZL) vaut : <strong> {zl}  Ohms</strong>
                                     </p>) : ''
                                 }
@@ -163,35 +201,32 @@ function Calcul() {
                             </p>
 
                             {
-                                zl > 166.808 ? (<>
-                                    <div className="form-group">
-                                        <label>Veuillez entrer la valeur du courant de défaut (Id)</label>
-                                        <input type="number" onChange={(e) => setId(e.target.value)} className="form-control mt-1"
-                                            placeholder="La valeur de In (Courant de défaut)" value={id} />
-                                        {
-                                            zd > 0 ? (<>
-                                                {
-                                                    id > 312 && id < 1040 ? (<p style={{ color: "red" }}>
-                                                        Il s'agit de surcharge comme cause principale car {id} est sup à 312 A
-                                                    </p>) : ""
-                                                }
-                                                {
-                                                    id > 1040 ? (<p style={{ color: "red" }}>
-                                                        Il s'agit de court-circuit comme cause principale car {id} est sup à 1040 A
-                                                    </p>) : ""
-                                                }
-                                            </>) : ""
-                                        }
+                                zl !== '420.50984170818174' && zl > 0 ? (<>
+                                    {
+                                        (id > 0 && ud > 0) && (id == 260 && ud == 30000) ? <p className='alert alert-success ad'>Fonctionnement normal</p> : ''
+                                    }
 
-                                    </div>
-                                    <div className="form-group mt-2">
-                                        <label>Veuillez entrer la valeur de tension de défaut (Ud) </label>
-                                        <input type="number" onChange={(e) => setUd(e.target.value)} value={ud}
-                                            className="form-control mt-1" placeholder="La valeur de Ud (Tension de défaut)" />
-                                    </div>
+                                    {
+                                        zl == '420.50984170818174' ? (<>
+
+                                        </>) : (<>
+                                            <div className="form-group">
+                                                <label>Veuillez entrer la valeur du courant mesuré </label>
+                                                <input type="number" onChange={(e) => setId(e.target.value)} className="form-control mt-1"
+                                                    placeholder="Courant mesuré" value={id} />
+                                            </div>
+                                            <div className="form-group mt-2">
+                                                <label>Veuillez entrer la valeur de la tension mesurée </label>
+                                                <input type="number" onChange={(e) => setUd(e.target.value)} value={ud}
+                                                    className="form-control mt-1" placeholder="Tension mesurée" />
+                                            </div>
+                                        </>)
+                                    }
+
                                     <p className="mt-2">
                                         {
                                             zd > 0 ? (<>
+                                                <p className='alert alert-info'> Déclenchement de disjoncteur</p>
                                                 La valeur de Zd vaut : <strong>{zd} Ohms</strong>
                                             </>) : ''
                                         }
@@ -206,33 +241,59 @@ function Calcul() {
 
                         </div>
                         {
-                            zl > 166.808 ? (<>
+                            zl !== '420.50984170818174' && zl > 0 ? (<>
                                 {
                                     zd > 0 ? (<>
                                         <div className="card-footer">
-                                            <button onClick={Calculdj} className="btn btn-success" style={{ float: "right" }}>Afficher la distance dj</button>
+                                            <button onClick={Calculdj} className="btn btn-success" style={{ float: "right" }}>Afficher la distance </button>
                                             <button onClick={resetTout} className="btn btn-dark ">Réinitialiser</button>
-
-                                            <button className="btn btn-success" style={{ marginLeft: '10px' }} onClick={calculZd}>Calculer Zd</button>
 
                                         </div>
                                     </>) : (<>
-                                        <div className="card-footer">
-                                            <button className="btn btn-success" style={{ float: "right" }} onClick={calculZd}>Calculer Zd</button>
-                                        </div>
+                                        {
+                                            id == 260 && ud == 30000 ? (<>
+                                                <div className="card-footer">
+                                                    <button style={{ float: 'right' }} onClick={resetTout} className="btn btn-dark ">Réinitialiser</button>
+                                                </div>
+                                            </>) : (<>
+                                                {
+                                                    zl == '420.50984170818174' ? (<>
+                                                        <div className="card-footer">
+                                                            <button style={{ float: 'right' }} onClick={resetTout} className="btn btn-dark ">Réinitialiser</button>
+                                                        </div>
+                                                    </>) : (<>
+                                                        <div className="card-footer">
+                                                            <button className="btn btn-success"
+                                                                style={{ float: "right" }}
+                                                                onClick={calculZd}>Calculer l'impédance de défaut</button>
+                                                        </div>
+                                                    </>)
+                                                }
+
+                                            </>)
+                                        }
                                     </>)
                                 }
                             </>) : (<>
                                 {
                                     zlca > 0 && d !== "" ? (<>
                                         <div className="card-footer">
-                                            <button onClick={Calcul} className="btn btn-success" style={{ float: "right" }}>Calculer ZL</button>
+                                            <button onClick={Calcul} className="btn btn-success" style={{ float: "right" }}>Calculer l'impédance de Ligne
+                                            </button>
                                             <button onClick={resetTout} className="btn btn-dark ">Réinitialiser</button>
                                         </div>
                                     </>) : ""
                                 }
                             </>)
                         }
+                        {
+                            zlca > 0 ? (<></>) : (<>
+                                <div className="card-footer">
+                                    <button onClick={ImpedanceCa} style={{ float: 'right' }} className="btn btn-success ">Calculer l'impédance caractéristique</button>
+                                </div>
+                            </>)
+                        }
+
                     </div>
                 </div>
             </div>

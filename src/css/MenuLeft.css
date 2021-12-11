@@ -2,6 +2,8 @@
     width: 240px; 
     height:93.6vh;
     background-color: #eee; /* Grey background color */
+    position: fixed;
+    margin-top: 50px;
   }
   
 .vertical-menu a {

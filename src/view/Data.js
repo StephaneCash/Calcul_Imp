@@ -74,7 +74,7 @@ function Data() {
                 <div className="col-md-2">
                     <MenuLeft />
                 </div>
-                <div className="col-md-10" style={{ marginTop: '50px' }}>
+                <div className="col-md-10" style={{ marginTop: '70px' }}>
                     <p>Courbe caractéristique de l'impédance de Ligne (ZL)</p>
                     <Line
                         data={data2}
