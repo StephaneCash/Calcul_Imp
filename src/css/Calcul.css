@@ -1,0 +1,17 @@
+.card{
+    width: 50%;
+    margin : 0 auto;
+}
+
+.card-body{
+    padding: 20px !important;
+}
+
+input:focus, button:focus{
+    box-shadow: none !important;
+    border: 1px solid silver;
+}
+
+.menu{
+    width: 82.3% !important;
+}
