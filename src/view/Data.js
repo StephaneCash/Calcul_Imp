@@ -48,7 +48,7 @@ function Data() {
             {
 
                 label: 'Impédance de Ligne ',
-                data: value,
+                data: zd,
                 fill: false,
                 backgroundColor: 'silver',
                 borderColor: 'black',
@@ -74,7 +74,7 @@ function Data() {
                 <div className="col-md-2">
                     <MenuLeft />
                 </div>
-                <div className="col-md-10" style={{ marginTop: '70px' }}>
+                <div className="col-md-10" style={{ marginTop: '70px', width:"80%" }}>
                     <p>Courbe caractéristique de l'impédance de Ligne (ZL)</p>
                     <Line
                         data={data2}

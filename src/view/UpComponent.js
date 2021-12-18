@@ -5,7 +5,7 @@ function UpComponent(){
         <>
             <div className='upComponent'>
                 <p className="mtT" style={{ color:"white", fontSize:"18px", marginTop:"7px", float:"right",}}>
-                    Localiseur de défauts automatiques moyenne tension
+                    Localisateur de défauts automatiques moyenne tension
                 </p>
             </div>
         </>
