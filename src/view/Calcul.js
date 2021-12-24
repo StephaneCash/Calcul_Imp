@@ -15,7 +15,7 @@ function Calcul() {
     const [dj, setDj] = useState('');
     const [data, setData] = useState("one");
     const [r, setR] = useState('');
-    const [zl, setZl] = useState(420.50984170818174);
+    const [zl, setZl] = useState(600.5088);
     const [x, setX] = useState('');
 
     let tab = {};
@@ -23,7 +23,7 @@ function Calcul() {
     let navigate = useNavigate();
 
     function dataComplet() {
-        if (zl === 420.50984170818174 && zd > 0 && dj > 0) {
+        if (zl === 600.5088 && zd > 0 && dj > 0) {
             tab.zl = zl;
             tab.zd = zd;
             tab.dj = dj;
@@ -56,8 +56,14 @@ function Calcul() {
     }
 
     const Calculdj = () => {
-        let djf = zd / 420.50984170818174;
+        let djf = zd / 600.5088;
         setDj(djf);
+    }
+
+    let da = false;
+
+    if (id > 1040) {
+        da = true;
     }
 
     const calculZd = () => {
@@ -101,30 +107,51 @@ function Calcul() {
                             </div>
 
                             {
-                                zd > 0 ? (<>
-                                    {
-                                        id == parseInt(260) && ud == parseInt(30000) ? (<>
-                                            <div className="alert alert-success mt-3">Fonctionnement normal</div>
-                                        </>) : (<>
-                                            <div className="alert alert-danger mt-3">Fonctionnement anormal
-                                                {
-                                                    id !== '260' ? (<> " {id} est différent de 260 A "</>) : (<></>)
-                                                }
-                                                {
-                                                    ud !== '30000' ? (<> " {ud} est différent de 30 KV "</>) : (<></>)
-                                                }
-                                            </div>
-                                        </>)
-                                    }
+                                ud > 0 && ud < 30000 ? (<>
+                                    <div className="alert alert-danger mt-3">
+                                        Surtention
+                                    </div>
+                                    <div className="alert alert-success">
+                                        Déclenchement de disjoncteur
+                                    </div>
                                 </>) : (<></>)
                             }
 
+                            {
+                                ud > 0 && ud > 30000 ? (<>
+                                    <div className="alert alert-success">
+                                        Déclenchement de disjoncteur
+                                    </div>
+                                </>) : (<></>)
+                            }
+
+                            {
+                                id > 0 && id >= 312 && id < 1040 ? (<>
+                                    <div className="alert alert-danger mt-3">
+                                        Surcharge
+                                    </div>
+                                    <div className="alert alert-success">
+                                        Coupure de fusible
+                                    </div>
+                                </>) : (<></>)
+                            }
+                            {
+                                id > 0 && id > 1040 ? (<>
+                                    <div className="alert alert-danger mt-3">
+                                        Court-circuit
+                                    </div>
+                                    <div className="alert alert-success">
+                                        Déclenchement de disjoncteur
+                                    </div>
+                                </>) : (<></>)
+                            }
+
+
                             <p className="mt-2">
                                 {
-                                    id == parseInt(260) && ud == parseInt(30000) ? (<></>) : (<>
+                                    da === true && id == parseInt(260) && ud == parseInt(30000) ? (<></>) : (<>
                                         {
                                             zd > 0 ? (<>
-                                                <p className='alert alert-info'> Déclenchement de disjoncteur</p>
                                                 La valeur de Zd vaut : <strong>{zd} Ohms</strong>
                                                 <p>
                                                     {
@@ -158,9 +185,14 @@ function Calcul() {
                                                 onClick={sauve}>Sauverder vos données</button>
                                         </>) : (<></>)
                                     }
-                                    <button className="btn btn-success"
-                                        style={{ float: "right" }}
-                                        onClick={calculZd}>Calculer l'impédance de défaut</button>
+                                    {
+                                        da === true && ud > 0 && (<>
+                                            <button className="btn btn-success"
+                                                style={{ float: "right" }}
+                                                onClick={calculZd}>Calculer l'impédance de défaut</button>
+                                        </>)
+                                    }
+
                                 </div>
                             </>)
                         }
